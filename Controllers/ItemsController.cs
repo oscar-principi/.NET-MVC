@@ -24,8 +24,13 @@ namespace MVC.Controllers
         public async Task<IActionResult> GetByIdAsync(int id)
         {
             var item = await _context.Items.FirstOrDefaultAsync(x => x.Id == id);
+            if (item == null)
+            {
+                return NotFound();
+            }
             return View(item);
         }
+
 
         public async Task<IActionResult> Create()
         {
@@ -33,10 +38,10 @@ namespace MVC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("Id, Name, Price")] Item item)
+        public async Task<IActionResult> Create(Item item)
         {
-            if (ModelState.IsValid) 
-            { 
+            if (ModelState.IsValid)
+            {
                 _context.Items.Add(item);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -50,16 +55,33 @@ namespace MVC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, [Bind("Id, Name, Price")] Item item)
+        public async Task<IActionResult> Edit(int id, Item item)
         {
+            if (id != item.Id)
+            {
+                return BadRequest();
+            }
+
             if (ModelState.IsValid)
             {
-                _context.Items.Update(item);
-                await _context.SaveChangesAsync();
+                try
+                {
+                    _context.Items.Update(item);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ItemExists(id))
+                    {
+                        return NotFound();
+                    }
+                    throw;
+                }
                 return RedirectToAction("Index");
             }
             return View(item);
         }
+
 
         public async Task<IActionResult> Delete(int id)
         {
@@ -70,13 +92,26 @@ namespace MVC.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var item = await _context.Items.FindAsync(id);
-            if(item != null)
+            if (item != null)
             {
-                _context.Items.Remove(item);
-                await _context.SaveChangesAsync();
+                try
+                {
+                    _context.Items.Remove(item);
+                    await _context.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "Error al eliminar el ítem. Intenta de nuevo.");
+                    return View(item);
+                }
             }
             return RedirectToAction("Index");
         }
+        private bool ItemExists(int id)
+        {
+            return _context.Items.Any(e => e.Id == id);
+        }
+
     }
 }
 
