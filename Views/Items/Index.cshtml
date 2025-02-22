@@ -1,0 +1,47 @@
+﻿@model List<MVC.Models.Item>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h3>Listado</h3>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Precio</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Price.ToString("N2") $</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Editar</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div>
+        <a href="@Url.Action("Index", "Home")">Inicio |</a>
+        <a href="@Url.Action("Create", "Items")">Alta de Item</a>
+
+    </div>
+}
+else
+{
+    <p>No hay elementos disponibles.</p>
+    <div>
+        <a href="@Url.Action("Index", "Home")">Inicio |</a>
+        <a href="@Url.Action("Create", "Items")">Alta de Item</a>
+
+    </div>
+}
+

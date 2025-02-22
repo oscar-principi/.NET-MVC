@@ -1,0 +1,25 @@
+﻿@model MVC.Models.Item
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h3>Alta</h3>
+
+<form asp-action="Create" method="post">
+    <br />
+    <div class="form-group">
+        <label for="Name">Nombre</label>
+        <input type="text" class="form-comtrol" asp-for="Name" />
+    </div>
+    <div class="form-group">
+        <label for="Price">Precio</label>
+        &nbsp&nbsp<input type="number" class="form-comtrol" asp-for="Price" />
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Crear</button>
+</form>
+<div>
+    <a href="@Url.Action("Index", "Home")">Inicio |</a>
+    <a href="@Url.Action("Index", "Items")">Listado de Items</a> 
+</div>

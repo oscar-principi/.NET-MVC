@@ -1,0 +1,25 @@
+﻿@model MVC.Models.Item
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h3>Editar</h3>
+
+<form asp-action="Edit" method="post">
+    <br />
+    <div class="form-group">
+        <label for="Name">Nombre</label>
+        <input type="text" class="form-comtrol" asp-for="Name" />
+    </div>
+    <div class="form-group">
+        <label for="Price">Precio</label>
+        &nbsp&nbsp<input type="number" class="form-comtrol" asp-for="Price" />
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Editar</button>
+</form>
+<div>
+    <a href="@Url.Action("Index", "Items")">Listado de Items</a> |
+    <a href="@Url.Action("Create", "Items")">Alta de Item</a>
+</div>

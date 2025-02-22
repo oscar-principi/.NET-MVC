@@ -1,0 +1,33 @@
+﻿@model MVC.Models.Item
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h3>Eliminar</h3>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Precio</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@Model.Name</td>
+            <td>@Model.Price $</td>
+        </tr>
+    </tbody>
+</table>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <input type="submit" class="btn btn-danger" value="Delete" />
+</form>
+<div>
+    <a href="@Url.Action("Index", "Home")">Inicio |</a>
+    <a href="@Url.Action("Index", "Items")">Listado de Items |</a> 
+    <a href="@Url.Action("Create", "Items")">Alta de Item</a>
+</div>
